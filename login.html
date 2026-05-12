@@ -1,0 +1,758 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Campus Finder – Smart Lost & Found</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@800&family=DM+Sans:wght@300;400;500&display=swap"
+    rel="stylesheet">
+  <style>
+    /* ── Reset & Base ── */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: #0F1117;
+      color: white;
+      font-family: 'DM Sans', sans-serif;
+      overflow-x: hidden;
+      scroll-behavior: smooth;
+    }
+
+    h1,
+    h2,
+    h3,
+    .logo {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      letter-spacing: -1px;
+    }
+
+    /* ── Navbar ── */
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 28px 60px;
+      position: fixed;
+      top: 0;
+      width: 100%;
+      z-index: 1000;
+      background: rgba(15, 17, 23, 0.8);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .logo {
+      font-size: 28px;
+      color: #F59E0B;
+      cursor: pointer;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 30px;
+      align-items: center;
+    }
+
+    .nav-links a {
+      color: rgba(255, 255, 255, 0.7);
+      text-decoration: none;
+      font-weight: 500;
+      transition: 0.3s;
+    }
+
+    .nav-links a:hover {
+      color: #F59E0B;
+    }
+
+    .nav-login {
+      padding: 12px 28px;
+      border-radius: 999px;
+      border: none;
+      background: #EF4444;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .nav-login:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 20px rgba(239, 68, 68, 0.3);
+    }
+
+    /* ── Hero Section ── */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 120px 30px 60px;
+      position: relative;
+    }
+
+    .hero h1 {
+      font-size: 72px;
+      line-height: 1;
+      margin-bottom: 25px;
+      max-width: 900px;
+    }
+
+    #rotatingText {
+      font-size: 24px;
+      color: #F59E0B;
+      min-height: 40px;
+      margin-bottom: 40px;
+    }
+
+    .cta-group {
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    .cta-btn {
+      padding: 20px 40px;
+      border: none;
+      border-radius: 20px;
+      font-size: 18px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: 0.3s;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .lost-btn {
+      background: #EF4444;
+      color: white;
+    }
+
+    .found-btn {
+      background: #F59E0B;
+      color: black;
+    }
+
+    .cta-btn:hover {
+      transform: translateY(-5px) scale(1.05);
+    }
+
+    /* ── Floating Elements ── */
+    .floating-item {
+      position: absolute;
+      font-size: 40px;
+      opacity: 0.2;
+      filter: blur(1px);
+      animation: floatAround 20s infinite linear;
+      pointer-events: none;
+    }
+
+    @keyframes floatAround {
+      0% {
+        transform: translate(0, 0) rotate(0deg);
+      }
+
+      25% {
+        transform: translate(100px, 50px) rotate(90deg);
+      }
+
+      50% {
+        transform: translate(50px, 150px) rotate(180deg);
+      }
+
+      75% {
+        transform: translate(-100px, 100px) rotate(270deg);
+      }
+
+      100% {
+        transform: translate(0, 0) rotate(360deg);
+      }
+    }
+
+
+
+    /* ── How It Works ── */
+    .section {
+      padding: 120px 30px;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .section-title {
+      text-align: center;
+      margin-bottom: 80px;
+    }
+
+    .section-title h2 {
+      font-size: 48px;
+      margin-bottom: 15px;
+    }
+
+    .section-title p {
+      color: rgba(255, 255, 255, 0.5);
+      font-size: 18px;
+    }
+
+    .steps-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 30px;
+    }
+
+    .step-card {
+      background: #171A21;
+      padding: 50px;
+      border-radius: 32px;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      transition: 0.4s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .step-card:hover {
+      transform: translateY(-10px);
+      border-color: rgba(245, 158, 11, 0.3);
+    }
+
+    .step-num {
+      position: absolute;
+      top: -20px;
+      right: -20px;
+      font-size: 120px;
+      font-family: 'Syne', sans-serif;
+      opacity: 0.05;
+      font-weight: 900;
+    }
+
+    .step-icon {
+      font-size: 40px;
+      margin-bottom: 25px;
+      display: block;
+    }
+
+    .step-card h3 {
+      font-size: 24px;
+      margin-bottom: 15px;
+    }
+
+    .step-card p {
+      color: rgba(255, 255, 255, 0.6);
+      line-height: 1.6;
+    }
+
+    /* ── Testimonials ── */
+    .testimonial-card {
+      background: rgba(245, 158, 11, 0.03);
+      border: 1px solid rgba(245, 158, 11, 0.1);
+      padding: 40px;
+      border-radius: 24px;
+      font-style: italic;
+      position: relative;
+    }
+
+    .testimonial-card::before {
+      content: '"';
+      position: absolute;
+      top: 10px;
+      left: 20px;
+      font-size: 80px;
+      color: #F59E0B;
+      opacity: 0.2;
+      font-family: serif;
+    }
+
+    .author {
+      margin-top: 20px;
+      font-style: normal;
+      font-weight: bold;
+      color: #F59E0B;
+      display: block;
+    }
+
+    /* ── FAQ ── */
+    .faq-item {
+      background: #171A21;
+      margin-bottom: 15px;
+      border-radius: 16px;
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .faq-question {
+      padding: 25px;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-weight: bold;
+    }
+
+    .faq-answer {
+      padding: 0 25px 25px;
+      color: rgba(255, 255, 255, 0.6);
+      display: none;
+    }
+
+    /* ── Footer ── */
+    footer {
+      background: #090B0F;
+      padding: 80px 30px;
+      text-align: center;
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .footer-links {
+      display: flex;
+      justify-content: center;
+      gap: 40px;
+      margin: 30px 0;
+    }
+
+    .footer-links a {
+      color: rgba(255, 255, 255, 0.4);
+      text-decoration: none;
+      transition: 0.3s;
+    }
+
+    .footer-links a:hover {
+      color: #F59E0B;
+    }
+
+    /* ── Login Modal ── */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.9);
+      backdrop-filter: blur(10px);
+      z-index: 2000;
+      display: none;
+      justify-content: center;
+      align-items: center;
+      opacity: 0;
+      transition: 0.5s;
+    }
+
+    .modal-content {
+      background: #171A21;
+      width: 100%;
+      max-width: 450px;
+      padding: 50px;
+      border-radius: 32px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      position: relative;
+      transform: translateY(30px);
+      transition: 0.5s;
+    }
+
+    .modal-overlay.active {
+      display: flex;
+      opacity: 1;
+    }
+
+    .modal-overlay.active .modal-content {
+      transform: translateY(0);
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 25px;
+      right: 25px;
+      font-size: 24px;
+      cursor: pointer;
+      color: rgba(255, 255, 255, 0.3);
+      transition: 0.3s;
+    }
+
+    .modal-close:hover {
+      color: white;
+    }
+
+    .modal-content h2 {
+      font-size: 32px;
+      margin-bottom: 10px;
+      text-align: center;
+    }
+
+    .modal-content p {
+      color: rgba(255, 255, 255, 0.5);
+      text-align: center;
+      margin-bottom: 35px;
+    }
+
+    .form-field {
+      margin-bottom: 20px;
+    }
+
+    .form-field label {
+      display: block;
+      font-size: 13px;
+      color: rgba(255, 255, 255, 0.4);
+      margin-bottom: 8px;
+      text-transform: uppercase;
+    }
+
+    .form-field input {
+      width: 100%;
+      padding: 16px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 12px;
+      color: white;
+      font-family: inherit;
+      outline: none;
+      transition: 0.3s;
+    }
+
+    .form-field input:focus {
+      border-color: #F59E0B;
+      background: rgba(245, 158, 11, 0.05);
+    }
+
+    .login-submit {
+      width: 100%;
+      padding: 18px;
+      background: #F59E0B;
+      color: black;
+      border: none;
+      border-radius: 12px;
+      font-weight: bold;
+      font-size: 16px;
+      cursor: pointer;
+      transition: 0.3s;
+      margin-top: 10px;
+    }
+
+    .login-submit:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 20px rgba(245, 158, 11, 0.2);
+    }
+
+    /* ── Ticker ── */
+    .ticker {
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      background: #171A21;
+      padding: 14px 25px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      z-index: 1500;
+    }
+
+    .pulse {
+      width: 10px;
+      height: 10px;
+      background: #EF4444;
+      border-radius: 50%;
+      animation: pulse 1.5s infinite;
+    }
+
+    @keyframes pulse {
+      0% {
+        transform: scale(1);
+        opacity: 1;
+      }
+
+      50% {
+        transform: scale(1.5);
+        opacity: 0.5;
+      }
+
+      100% {
+        transform: scale(1);
+        opacity: 1;
+      }
+    }
+
+    #tickerText {
+      color: #F59E0B;
+      font-size: 14px;
+    }
+
+    /* ── Animations ── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(40px);
+      transition: 1s cubic-bezier(0.17, 0.67, 0.83, 0.67);
+    }
+
+    .reveal.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    @media (max-width: 768px) {
+      .hero h1 {
+        font-size: 48px;
+      }
+
+      .navbar {
+        padding: 20px 30px;
+      }
+
+      .nav-links {
+        display: none;
+      }
+
+      .stats-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Floating Decoration -->
+  <div class="floating-item" style="top: 15%; left: 10%; animation-delay: 0s;">💰</div>
+  <div class="floating-item" style="top: 30%; right: 15%; animation-delay: 2s;">🔌</div>
+  <div class="floating-item" style="bottom: 20%; left: 15%; animation-delay: 4s;">🔑</div>
+  <div class="floating-item" style="top: 60%; right: 10%; animation-delay: 6s;">📓</div>
+  <div class="floating-item" style="bottom: 40%; right: 30%; animation-delay: 1s;">💳</div>
+
+  <nav class="navbar">
+    <div class="logo" onclick="window.scrollTo(0,0)">Campus Finder</div>
+    <div class="nav-links">
+      <a href="#how-it-works">How it works</a>
+      <a href="#faq">FAQ</a>
+      <button class="nav-login" onclick="openModal('general')">Sign In</button>
+    </div>
+  </nav>
+
+  <section class="hero reveal">
+    <h1>Your Campus Community, Working Together to <span style="color: #EF4444;">Find</span> What's Lost.</h1>
+    <p id="rotatingText"></p>
+    <div class="cta-group">
+      <button class="cta-btn lost-btn" onclick="openModal('lost')">😟 I Lost Something</button>
+      <button class="cta-btn found-btn" onclick="openModal('found')">🙌 I Found Something</button>
+    </div>
+  </section>
+
+
+
+  <section class="section" id="how-it-works">
+    <div class="section-title reveal">
+      <h2>How it Works</h2>
+      <p>Simple steps to reunite with your belongings.</p>
+    </div>
+    <div class="steps-grid">
+      <div class="step-card reveal">
+        <span class="step-num">01</span>
+        <span class="step-icon">📝</span>
+        <h3>Report It</h3>
+        <p>Whether you lost something or found something, create a detailed report in seconds.</p>
+      </div>
+      <div class="step-card reveal">
+        <span class="step-num">02</span>
+        <span class="step-icon">🔍</span>
+        <h3>Wait for Match</h3>
+        <p>Our smart system notifies you as soon as a potential match is reported nearby.</p>
+      </div>
+      <div class="step-card reveal">
+        <span class="step-num">03</span>
+        <span class="step-icon">🤝</span>
+        <h3>Verify & Return</h3>
+        <p>Securely chat with the finder, verify ownership, and meet safely on campus.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-title reveal">
+      <h2>Real Stories</h2>
+      <p>Student experiences from around the campus.</p>
+    </div>
+    <div class="steps-grid">
+      <div class="testimonial-card reveal">
+        <p>"I lost my project notebook right before the submission. Someone found it in the cafeteria and posted it
+          here. Saved my semester!"</p>
+        <span class="author">— Rahul, CSE Department</span>
+      </div>
+      <div class="testimonial-card reveal">
+        <p>"Found a wallet in the library and couldn't find the owner. Posted it here and within an hour, the owner
+          contacted me. Great platform!"</p>
+        <span class="author">— Priya, Law Block</span>
+      </div>
+      <div class="testimonial-card reveal">
+        <p>"Lost my expensive headphones during a gym session. Checked the app and they were posted within 20 minutes!
+          So thankful for the honest people here."</p>
+        <span class="author">— Sarah, Sports Complex</span>
+      </div>
+      <div class="testimonial-card reveal">
+        <p>"I found a library card and didn't know where to turn. Campus Finder made it so easy to find the owner. We
+          met at the library entrance and they were so relieved!"</p>
+        <span class="author">— Mike, Arts Block</span>
+      </div>
+      <div class="testimonial-card reveal">
+        <p>"Lost my glasses in the auditorium. I was worried I'd have to buy a new pair, but I found them on Campus
+          Finder. This platform is a lifesaver!"</p>
+        <span class="author">— Anita, Science Hall</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="faq">
+    <div class="section-title reveal">
+      <h2>Got Questions?</h2>
+      <p>Everything you need to know about Campus Finder.</p>
+    </div>
+    <div style="max-width: 800px; margin: 0 auto;">
+      <div class="faq-item reveal">
+        <div class="faq-question">Is it free to use? <span>+</span></div>
+        <div class="faq-answer">Yes! Campus Finder is a community platform built by students, for students. It is 100%
+          free.</div>
+      </div>
+      <div class="faq-item reveal">
+        <div class="faq-question">How is ownership verified? <span>+</span></div>
+        <div class="faq-answer">We encourage finders to ask for specific details not mentioned in the report (like a
+          wallpaper description or a specific item inside a bag).</div>
+      </div>
+      <div class="faq-item reveal">
+        <div class="faq-question">Where should I meet the owner? <span>+</span></div>
+        <div class="faq-answer">Always meet in public campus locations like the main canteen, library entrance, or
+          security desks.</div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="logo">Campus Finder</div>
+    <div class="footer-links">
+      <a href="#">Privacy Policy</a>
+      <a href="#">Terms of Service</a>
+      <a href="#">Contact Us</a>
+    </div>
+    <p style="color: rgba(255,255,255,0.3); font-size: 14px;">© 2026 Campus Finder. Made with ❤️ for the Campus.</p>
+  </footer>
+
+  <div class="ticker">
+    <div class="pulse"></div>
+    <div id="tickerText"></div>
+  </div>
+
+  <!-- Login Modal -->
+  <div class="modal-overlay" id="loginModal">
+    <div class="modal-content">
+      <span class="modal-close" onclick="closeModal()">&times;</span>
+      <h2 id="modalTitle">Sign In</h2>
+      <p>Login with your university email to continue.</p>
+      <div class="form-field">
+        <label>University Email</label>
+        <input type="email" placeholder="name@university.edu">
+      </div>
+      <div class="form-field">
+        <label>Password</label>
+        <input type="password" placeholder="••••••••">
+      </div>
+      <button class="login-submit" onclick="processLogin()">Access Dashboard</button>
+    </div>
+  </div>
+
+  <script>
+    let currentTarget = 'general';
+
+    function openModal(type) {
+      currentTarget = type;
+      const modal = document.getElementById('loginModal');
+      modal.style.display = 'flex';
+      setTimeout(() => modal.classList.add('active'), 10);
+
+      if (type === 'lost') document.getElementById('modalTitle').innerText = 'Report Lost Item';
+      else if (type === 'found') document.getElementById('modalTitle').innerText = 'Report Found Item';
+      else document.getElementById('modalTitle').innerText = 'Welcome Back';
+    }
+
+    function closeModal() {
+      const modal = document.getElementById('loginModal');
+      modal.classList.remove('active');
+      setTimeout(() => modal.style.display = 'none', 500);
+    }
+
+    function processLogin() {
+      document.body.style.opacity = '0';
+      setTimeout(() => {
+        let hash = '';
+        if (currentTarget === 'lost') hash = '#lostSection';
+        else if (currentTarget === 'found') hash = '#foundSection';
+        window.location.href = 'index.html' + hash;
+      }, 500);
+    }
+
+    // FAQ Toggle
+    document.querySelectorAll('.faq-question').forEach(q => {
+      q.addEventListener('click', () => {
+        const answer = q.nextElementSibling;
+        const isOpen = answer.style.display === 'block';
+
+        // Close others
+        document.querySelectorAll('.faq-answer').forEach(a => a.style.display = 'none');
+        document.querySelectorAll('.faq-question span').forEach(s => s.innerText = '+');
+
+        if (!isOpen) {
+          answer.style.display = 'block';
+          q.querySelector('span').innerText = '-';
+        }
+      });
+    });
+
+    // Rotating Text
+    const lines = [
+      "Lost your notes? Found someone's keys?",
+      "Every lost thing has someone looking for it.",
+      "Report it. Find it. Return it.",
+      "Your campus. Your community. Your stuff found."
+    ];
+    let lineIndex = 0;
+    function rotateText() {
+      const el = document.getElementById('rotatingText');
+      el.style.opacity = '0';
+      setTimeout(() => {
+        el.innerText = lines[lineIndex];
+        el.style.opacity = '1';
+        lineIndex = (lineIndex + 1) % lines.length;
+      }, 500);
+    }
+    rotateText();
+    setInterval(rotateText, 3500);
+
+    // Ticker
+    const tickerMessages = [
+      'Wallet returned near Physics Block',
+      'ID card claimed from Library',
+      'Keys found in Hostel B',
+      'Notebook matched in CSE Block'
+    ];
+    let tickerIndex = 0;
+    function rotateTicker() {
+      document.getElementById('tickerText').innerText = tickerMessages[tickerIndex];
+      tickerIndex = (tickerIndex + 1) % tickerMessages.length;
+    }
+    rotateTicker();
+    setInterval(rotateTicker, 3000);
+
+    // Scroll Reveal
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('show');
+        }
+      });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Campus Finder – User Profile</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@800&family=DM+Sans:wght@300;400;500&display=swap"
+    rel="stylesheet">
+  <style>
+    /* ── Reset & Base ── */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: #0F1117;
+      color: #fff;
+      font-family: 'DM Sans', sans-serif;
+      overflow-x: hidden;
+    }
+
+    h1,
+    h2,
+    h3,
+    .logo {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      letter-spacing: -1px;
+    }
+
+    /* ── Navbar ── */
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 28px 60px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(15, 17, 23, 0.85);
+      backdrop-filter: blur(18px);
+      border-bottom: 1px solid rgba(245, 158, 11, 0.12);
+    }
+
+    .logo {
+      font-size: 26px;
+      color: #F59E0B;
+      text-decoration: none;
+    }
+
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .nav-btn {
+      padding: 12px 24px;
+      border-radius: 999px;
+      border: 1px solid rgba(245, 158, 11, 0.3);
+      background: transparent;
+      color: #F59E0B;
+      font-weight: bold;
+      cursor: pointer;
+      transition: 0.3s;
+      text-decoration: none;
+      font-size: 14px;
+    }
+
+    .nav-btn:hover {
+      background: rgba(245, 158, 11, 0.1);
+      transform: translateY(-2px);
+    }
+
+    /* ── Profile Section ── */
+    .page-container {
+      max-width: 900px;
+      margin: 60px auto 120px;
+      padding: 0 30px;
+    }
+
+    .profile-card {
+      background: #171A21;
+      border-radius: 32px;
+      padding: 50px;
+      border: 1px solid rgba(255, 255, 255, 0.07);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .profile-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 6px;
+      background: linear-gradient(90deg, #F59E0B, #EF4444);
+    }
+
+    .profile-img-container {
+      position: relative;
+      margin-bottom: 30px;
+    }
+
+    .profile-img {
+      width: 150px;
+      height: 150px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 4px solid #F59E0B;
+      padding: 5px;
+      background: #0F1117;
+    }
+
+    .edit-badge {
+      position: absolute;
+      bottom: 5px;
+      right: 5px;
+      background: #F59E0B;
+      color: #000;
+      width: 35px;
+      height: 35px;
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 18px;
+      cursor: pointer;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    }
+
+    .profile-name {
+      font-size: 36px;
+      margin-bottom: 8px;
+    }
+
+    .profile-tag {
+      color: #F59E0B;
+      font-weight: 500;
+      font-size: 16px;
+      margin-bottom: 30px;
+      background: rgba(245, 158, 11, 0.1);
+      padding: 6px 16px;
+      border-radius: 999px;
+      display: inline-block;
+    }
+
+    /* ── Info Grid ── */
+    .info-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+      width: 100%;
+      text-align: left;
+      margin-top: 20px;
+    }
+
+    .info-item {
+      background: rgba(255, 255, 255, 0.03);
+      padding: 20px;
+      border-radius: 20px;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .info-label {
+      font-size: 12px;
+      color: rgba(255, 255, 255, 0.4);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 5px;
+      display: block;
+    }
+
+    .info-value {
+      font-size: 16px;
+      font-weight: 500;
+    }
+
+    /* ── Stats ── */
+    .profile-stats {
+      display: flex;
+      gap: 30px;
+      margin-top: 40px;
+      width: 100%;
+    }
+
+    .stat-box {
+      flex: 1;
+      padding: 25px;
+      background: linear-gradient(135deg, rgba(245, 158, 11, 0.05), rgba(239, 68, 68, 0.05));
+      border-radius: 24px;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .stat-num {
+      font-size: 32px;
+      font-family: 'Syne', sans-serif;
+      color: #F59E0B;
+      display: block;
+      margin-bottom: 5px;
+    }
+
+    .stat-text {
+      font-size: 13px;
+      color: rgba(255, 255, 255, 0.5);
+    }
+
+    /* ── Action Buttons ── */
+    .action-group {
+      display: flex;
+      gap: 15px;
+      margin-top: 40px;
+      width: 100%;
+    }
+
+    .btn {
+      flex: 1;
+      padding: 16px;
+      border-radius: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: 0.3s;
+      font-family: inherit;
+      border: none;
+    }
+
+    .btn-primary {
+      background: #F59E0B;
+      color: #000;
+    }
+
+    .btn-secondary {
+      background: rgba(255, 255, 255, 0.05);
+      color: #fff;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    }
+
+    @media (max-width: 600px) {
+      .info-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .profile-stats {
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <nav class="navbar">
+    <a href="index.html" class="logo">Campus Finder</a>
+    <div class="nav-right">
+      <a href="index.html" class="nav-btn">← Back to Dashboard</a>
+    </div>
+  </nav>
+
+  <div class="page-container">
+    <div class="profile-card">
+      <div class="profile-img-container">
+        <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Jyotiraditya" alt="Profile" class="profile-img"
+          id="profile-display">
+        <div class="edit-badge" onclick="document.getElementById('profile-upload').click()">✎</div>
+        <input type="file" id="profile-upload" accept="image/*" style="display:none;" onchange="updateProfilePic(this)">
+      </div>
+
+      <h1 class="profile-name" id="display-name">Alex Rivera</h1>
+      <span class="profile-tag">Verified Student</span>
+
+      <div class="info-grid">
+        <div class="info-item">
+          <span class="info-label">Student ID</span>
+          <span class="info-value">CF-2026-8842</span>
+        </div>
+        <div class="info-item">
+          <span class="info-label">Department</span>
+          <span class="info-value" id="display-dept">Electronics and communication engineering</span>
+        </div>
+        <div class="info-item">
+          <span class="info-label">Email Address</span>
+          <span class="info-value" id="display-email">alex.rivera@campus.edu</span>
+        </div>
+        <div class="info-item">
+          <span class="info-label">Phone</span>
+          <span class="info-value" id="display-phone">+91 90000 00000</span>
+        </div>
+      </div>
+
+      <div class="profile-stats">
+        <div class="stat-box">
+          <span class="stat-num">12</span>
+          <span class="stat-text">Items Reported</span>
+        </div>
+        <div class="stat-box">
+          <span class="stat-num">08</span>
+          <span class="stat-text">Items Found</span>
+        </div>
+        <div class="stat-box">
+          <span class="stat-num">05</span>
+          <span class="stat-text">Tokens Earned</span>
+        </div>
+      </div>
+
+      <div class="action-group">
+        <button class="btn btn-primary" id="edit-btn" onclick="toggleEdit()">Edit Profile</button>
+        <button class="btn btn-secondary">Privacy Settings</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let isEditing = false;
+
+    function updateProfilePic(input) {
+      if (input.files && input.files[0]) {
+        const reader = new FileReader();
+        reader.onload = function (e) {
+          document.getElementById('profile-display').src = e.target.result;
+        }
+        reader.readAsDataURL(input.files[0]);
+      }
+    }
+
+    function toggleEdit() {
+      const btn = document.getElementById('edit-btn');
+      const nameEl = document.getElementById('display-name');
+      const deptEl = document.getElementById('display-dept');
+      const emailEl = document.getElementById('display-email');
+      const phoneEl = document.getElementById('display-phone');
+
+      if (!isEditing) {
+        // Switch to Edit Mode
+        nameEl.innerHTML = `<input type="text" id="input-name" value="${nameEl.innerText}" style="width: 100%; background: rgba(255,255,255,0.05); border: 1px solid #F59E0B; color: white; font-family: inherit; font-size: 24px; text-align: center; border-radius: 8px; padding: 5px;">`;
+        deptEl.innerHTML = `<input type="text" id="input-dept" value="${deptEl.innerText}" style="width: 100%; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.2); color: white; font-family: inherit; border-radius: 4px; padding: 2px;">`;
+        emailEl.innerHTML = `<input type="text" id="input-email" value="${emailEl.innerText}" style="width: 100%; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.2); color: white; font-family: inherit; border-radius: 4px; padding: 2px;">`;
+        phoneEl.innerHTML = `<input type="text" id="input-phone" value="${phoneEl.innerText}" style="width: 100%; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.2); color: white; font-family: inherit; border-radius: 4px; padding: 2px;">`;
+
+        btn.innerText = 'Save Changes';
+        btn.style.background = '#10B981'; // Green for save
+        isEditing = true;
+      } else {
+        // Save and Switch to View Mode
+        const newName = document.getElementById('input-name').value;
+        const newDept = document.getElementById('input-dept').value;
+        const newEmail = document.getElementById('input-email').value;
+        const newPhone = document.getElementById('input-phone').value;
+
+        nameEl.innerText = newName;
+        deptEl.innerText = newDept;
+        emailEl.innerText = newEmail;
+        phoneEl.innerText = newPhone;
+
+        btn.innerText = 'Edit Profile';
+        btn.style.background = '#F59E0B'; // Back to Amber
+        isEditing = false;
+
+        // Show success message (using alert for demo)
+        alert('Profile updated successfully!');
+      }
+    }
+  </script>
+</body>
+
+</html>

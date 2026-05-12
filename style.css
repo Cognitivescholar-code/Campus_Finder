@@ -1,0 +1,248 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+/* More vibrant background */
+body {
+    min-height: 100vh;
+
+    background:
+        linear-gradient(135deg,
+            #4338ca,
+            #7c3aed,
+            #ec4899);
+
+    color: white;
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: flex-start;
+
+    padding: 30px;
+
+    opacity: 1;
+
+    transition: 0.6s;
+}
+
+
+/* Glass card */
+.container {
+    width: 90%;
+
+    max-width: 950px;
+
+    background: rgba(255, 255, 255, 0.12);
+
+    backdrop-filter: blur(22px);
+
+    border-radius: 28px;
+
+    padding: 35px;
+
+    box-shadow:
+        0 12px 40px rgba(0, 0, 0, 0.25);
+
+    animation: pageEnter 1s ease;
+}
+
+
+/* Page entry */
+@keyframes pageEnter {
+
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+}
+
+
+/* Headings */
+h1 {
+    text-align: center;
+
+    font-size: 42px;
+
+    margin-bottom: 20px;
+
+    letter-spacing: 1px;
+}
+
+h2 {
+    text-align: center;
+
+    margin: 25px 0 15px;
+}
+
+
+/* Inputs */
+input,
+select {
+
+    width: 100%;
+
+    padding: 16px;
+
+    margin: 12px 0;
+
+    border: none;
+
+    outline: none;
+
+    border-radius: 18px;
+
+    background: rgba(255, 255, 255, 0.15);
+
+    color: white;
+
+    font-size: 16px;
+
+    transition: 0.3s;
+}
+
+input::placeholder {
+    color: #eee;
+}
+
+input:focus,
+select:focus {
+
+    transform: scale(1.02);
+
+}
+
+
+/* Floating buttons */
+button {
+
+    display: block;
+
+    margin: 25px auto;
+
+    padding: 18px 45px;
+
+    border: none;
+
+    border-radius: 20px;
+
+    background:
+        linear-gradient(135deg,
+            #f59e0b,
+            #fb7185);
+
+    color: white;
+
+    font-size: 18px;
+
+    font-weight: bold;
+
+    cursor: pointer;
+
+    transition: 0.4s;
+
+    animation: floatBtn 2.5s infinite ease-in-out;
+}
+
+
+@keyframes floatBtn {
+
+    0% {
+        transform: translateY(0px);
+    }
+
+    50% {
+        transform: translateY(-4px);
+    }
+
+    100% {
+        transform: translateY(0px);
+    }
+
+}
+
+
+button:hover {
+
+    transform: scale(1.08);
+
+    box-shadow:
+        0 0 25px rgba(255, 255, 255, 0.3);
+
+}
+
+
+/* Scroll reveal cards */
+#lostItemList div,
+#foundItemList div {
+
+    background: rgba(255, 255, 255, 0.1);
+
+    padding: 22px;
+
+    margin: 25px 0;
+
+    border-radius: 22px;
+
+    text-align: center;
+
+    box-shadow:
+        0 8px 20px rgba(0, 0, 0, 0.18);
+
+    opacity: 0;
+
+    transform: translateY(30px);
+
+    transition: all 0.8s ease;
+}
+
+
+/* When visible */
+.show {
+
+    opacity: 1 !important;
+
+    transform: translateY(0px) !important;
+
+}
+
+
+/* Images */
+img {
+
+    margin-top: 15px;
+
+    border-radius: 18px;
+
+    transition: 0.4s;
+
+    box-shadow:
+        0 8px 25px rgba(0, 0, 0, 0.2);
+
+}
+
+img:hover {
+
+    transform: rotate(-1deg) scale(1.05);
+
+}
+
+
+hr {
+
+    margin-top: 20px;
+
+    border:
+        1px solid rgba(255, 255, 255, 0.15);
+
+}
