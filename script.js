@@ -143,7 +143,7 @@ let foundItems = [
         name: "Library Card",
         location: "Physics Lab",
         category: "Documents",
-        image: "images/Library Card.jpg",
+        image: "images/Library%20Card.jpg",
         description: "Library membership card for the Central Library.",
         date: "May 12, 2026"
     },
@@ -297,7 +297,7 @@ function submitLostItem() {
 
         category: category,
 
-        image: "images/wallet.jpg"
+        image: "images/Wallet.jpg"
 
     });
 
